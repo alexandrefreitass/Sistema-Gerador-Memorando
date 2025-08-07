@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      body {
+        padding: 20px;
+      }
+      #loader {
+        display: none;
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3>Gerador de Memorandos da Polícia</h3>
+      <p>Preencha os campos abaixo para gerar o documento em PDF.</p>
+      
+      <form id="memoForm">
+        <div class="form-group">
+          <label for="destinatario">Selecione o Destinatário</label>
+          <select class="form-control" id="destinatario" required>
+            <option value="" disabled selected>-- Carregando nomes... --</option>
+            <? for(var i = 0; i < nomesParaDropdown.length; i++) { ?>
+              <option value="<?= nomesParaDropdown[i] ?>"><?= nomesParaDropdown[i] ?></option>
+            <? } ?>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="numeroOficio">Número do Ofício/Memorando</label>
+          <input type="text" class="form-control" id="numeroOficio" placeholder="ex: 146/430/24" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Gerar PDF</button>
+      </form>
+      
+      <div id="loader" class="alert alert-info">
+        Gerando documento, por favor aguarde...
+      </div>
+      
+    </div>
+
+    <script>
+      // O script para lidar com o formulário permanece o mesmo.
+      document.getElementById("memoForm").addEventListener("submit", function(e) {
+        e.preventDefault(); 
+        document.getElementById("loader").style.display = "block"; 
+        
+        var dadosDoFormulario = {
+          destinatario: document.getElementById("destinatario").value,
+          numeroOficio: document.getElementById("numeroOficio").value
+        };
+        
+        google.script.run
+          .withSuccessHandler(abrirPdf)
+          .withFailureHandler(mostrarErro)
+          .gerarMemorandoPeloWebApp(dadosDoFormulario);
+      });
+      
+      function abrirPdf(url) {
+        document.getElementById("loader").style.display = "none";
+        window.open(url, '_blank');
+      }
+      
+      function mostrarErro(erro) {
+         document.getElementById("loader").style.display = "none";
+         alert("Ocorreu um erro: " + erro.message);
+      }
+      
+      // Remove o texto "Carregando..." após as opções serem carregadas
+      document.addEventListener('DOMContentLoaded', (event) => {
+          document.querySelector("#destinatario option[value='']").textContent = '-- Selecione um policial --';
+      });
+    </script>
+  </body>
+</html>
