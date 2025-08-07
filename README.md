@@ -1,7 +1,7 @@
 # Sistema de Geração e Automação de Memorandos
 
 <div align="center">
-  <img src="[COLE A URL DE UMA IMAGEM/LOGO PARA O PROJETO AQUI]" alt="Logo do Projeto de Memorandos" width="600">
+  <img src="https://github.com/user-attachments/assets/56aab02a-4e2d-4171-ba19-43b878b3d11a" alt="Logo do Projeto de Memorandos" width="600">
 </div>
 
 <div align="center">
